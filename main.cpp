@@ -3,6 +3,11 @@
 using namespace std;
 
 // These are the questions in the striver sheet https://takeuforward.org/interviews/strivers-sde-sheet-top-coding-interview-problems/
+
+/**
+ * Array portion
+ */
+
 int maxSubArray(vector<int> &nums)
 {
     int cur = nums[0];
@@ -128,8 +133,70 @@ int uniquePaths(int m, int n)
     return uniqueHelp(m - 1, n - 1, dp, m, n);
 }
 
+/**
+ * Linked list portion
+ */
+
+ListNode *reverseList(ListNode *head)
+{
+    ListNode *prev = NULL, *cur = head, *nextNode = NULL;
+
+    while (cur)
+    {
+        nextNode = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = nextNode;
+    }
+
+    return prev;
+}
+
+ListNode *middleNode(ListNode *head)
+{
+    ListNode *slow = head, *fast = head;
+    while (fast and fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return slow;
+}
+
+ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
+{
+    ListNode *temp = new ListNode(-1);
+    ListNode *dummy = temp;
+    while (list1 and list2)
+    {
+        if (list1->val < list2->val)
+        {
+            temp->next = list1;
+            list1 = list1->next;
+        }
+        else
+        {
+            temp->next = list2;
+            list2 = list2->next;
+        }
+        temp = temp->next;
+    }
+
+    if (list1)
+    {
+        temp->next = list1;
+    }
+
+    if (list2)
+    {
+        temp->next = list2;
+    }
+    return dummy->next;
+}
+
 int main()
 {
-    std::cout << "Hello practice questions\n";
+    std::cout << "Listed List questions\n";
     return 0;
 }
