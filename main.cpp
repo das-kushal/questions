@@ -90,6 +90,42 @@ int longestConsecutive(vector<int> &nums)
 
 int lengthOfLongestSubstring(string s)
 {
+    int n = s.length();
+    set<char> st;
+    int left = 0, right = 0;
+    int len = 0;
+    while (right < n)
+    {
+        if (st.find(s[right]) == st.end())
+        {
+            len = max(len, right - left + 1);
+            st.insert(s[right]);
+            right++;
+        }
+        else
+            st.erase(s[left++]);
+    }
+
+    return len;
+}
+
+int uniqueHelp(int i, int j, vector<vector<int>> &dp, int m, int n)
+{
+    if (i < 0 or i >= m or j < 0 or j >= n)
+        return 0;
+    if (i == 0 and j == 0)
+        return 1;
+    if (dp[i][j] != -1)
+        return dp[i][j];
+    int up = uniqueHelp(i - 1, j, dp, m, n);
+    int left = uniqueHelp(i, j - 1, dp, m, n);
+    return dp[i][j] = left + up;
+}
+int uniquePaths(int m, int n)
+{
+    vector<vector<int>> dp(m, vector<int>(n, -1));
+
+    return uniqueHelp(m - 1, n - 1, dp, m, n);
 }
 
 int main()
