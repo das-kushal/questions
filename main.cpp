@@ -229,6 +229,81 @@ ListNode *removeNthFromEnd(ListNode *head, int n)
     return start->next;
 }
 
+ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
+{
+    int sum = 0, carry = 0;
+    ListNode *temp = new ListNode(0);
+    ListNode *dummy = temp;
+    while (l1 or l2 or carry)
+    {
+        sum = 0;
+        if (l1)
+        {
+            sum += l1->val;
+            l1 = l1->next;
+        }
+        if (l2)
+        {
+            sum += l2->val;
+            l2 = l2->next;
+        }
+        if (carry)
+            sum += carry;
+
+        carry = sum / 10;
+        sum %= 10;
+        ListNode *node = new ListNode(sum);
+        temp->next = node;
+        temp = temp->next;
+    }
+
+    return dummy->next;
+}
+
+bool hasCycle(ListNode *head)
+{
+    ListNode *slow = head, *fast = head;
+
+    while (fast and fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast)
+            return true;
+    }
+
+    return false;
+}
+
+ListNode *detectCycle(ListNode *head)
+{
+    ListNode *slow = head, *fast = head;
+    bool cycle = false;
+    while (fast and fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast)
+        {
+            cycle = true;
+            break;
+        }
+    }
+
+    if (!cycle)
+        return NULL;
+
+    slow = head;
+    while (slow != fast)
+    {
+        slow = slow->next;
+        fast = fast->next;
+    }
+    return slow;
+}
+
 int main()
 {
     std::cout << "Listed List questions\n";
