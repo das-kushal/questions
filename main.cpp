@@ -133,6 +133,25 @@ int uniquePaths(int m, int n)
     return uniqueHelp(m - 1, n - 1, dp, m, n);
 }
 
+vector<vector<int>> merge(vector<vector<int>> &intervals)
+{
+    sort(intervals.begin(), intervals.end());
+    vector<vector<int>> ans;
+    // ans.push_back(intervals[0]);
+    for (auto it : intervals)
+    {
+        if (!ans.empty() and ans.back()[1] >= it[0])
+        {
+            ans.back()[1] = max(ans.back()[1], it[1]);
+        }
+        else
+            ans.push_back(it);
+    }
+    return ans;
+}
+
+int lengthOfLIS(vector<int> &nums) {}
+
 /**
  * Linked list portion
  */
