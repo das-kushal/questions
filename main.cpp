@@ -304,6 +304,90 @@ ListNode *detectCycle(ListNode *head)
     return slow;
 }
 
+ListNode *reverseKGroup(ListNode *head, int k)
+{
+    ListNode *cur = head;
+    int count = 0;
+    while (cur)
+    {
+        count++;
+        cur = cur->next;
+    }
+
+    if (count < k)
+    {
+        return head;
+    }
+    cur = head;
+    ListNode *prev = NULL, *nextNode = cur->next;
+
+    for (int i = 0; i < k; ++i)
+    {
+        nextNode = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = nextNode;
+    }
+
+    head->next = reverseKGroup(cur, k);
+    return prev;
+}
+
+// sort the linked list
+
+ListNode *middle(ListNode *head)
+{
+    ListNode *slow = head, *fast = head->next;
+    while (fast and fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return slow;
+}
+
+ListNode *merge(ListNode *left, ListNode *right)
+{
+    ListNode *dummy = new ListNode(-1);
+    ListNode *temp = dummy;
+    while (left and right)
+    {
+        if (left->val < right->val)
+        {
+            dummy->next = left;
+            left = left->next;
+        }
+        else
+        {
+            dummy->next = right;
+            right = right->next;
+        }
+
+        dummy = dummy->next;
+    }
+
+    if (left)
+        dummy->next = left;
+    if (right)
+        dummy->next = right;
+    return temp->next;
+}
+
+ListNode *sortList(ListNode *head)
+{
+    if (!head or !head->next)
+        return head;
+    ListNode *left = head;
+    ListNode *mid = middle(head);
+    ListNode *right = mid->next;
+    mid->next = nullptr;
+
+    left = sortList(left);
+    right = sortList(right);
+    return merge(left, right);
+}
+
 int main()
 {
     std::cout << "Listed List questions\n";
