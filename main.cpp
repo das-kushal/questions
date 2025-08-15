@@ -388,6 +388,28 @@ ListNode *sortList(ListNode *head)
     return merge(left, right);
 }
 
+Node *copyRandomList(Node *head)
+{
+    map<Node *, Node *> m;
+    Node *cur = head;
+    while (cur)
+    {
+        m[cur] = new Node(cur->val);
+        cur = cur->next;
+    }
+
+    cur = head;
+
+    while (cur)
+    {
+        m[cur]->next = m[cur->next];
+        m[cur]->random = m[cur->random];
+        cur = cur->next;
+    }
+
+    return m[head];
+}
+
 int main()
 {
     std::cout << "Listed List questions\n";

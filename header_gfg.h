@@ -116,35 +116,18 @@
 #include <unordered_set>
 #endif
 
-struct ListNode
+struct Node
 {
-    int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
+    int data;
+    struct Node *next;
+    struct Node *bottom;
 
-class Node
-{
-public:
-    int val;
-    Node *prev;
-    Node *next;
-    Node *child;
-};
-
-class Node
-{
-public:
-    int val;
-    Node *next;
-    Node *random;
-
-    Node(int _val)
+    Node(int x)
     {
-        val = _val;
+        data = x;
         next = NULL;
-        random = NULL;
+        bottom = NULL;
     }
 };
+
+using namespace std;
