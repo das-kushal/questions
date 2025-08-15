@@ -349,6 +349,44 @@ Node *copyRandomList(Node *head) {
     return m[head];
 }
 
+Node *copyRandomList(Node *head) {
+    map<Node *, Node *> m;
+    Node *cur = head;
+    while (cur) {
+        m[cur] = new Node(cur->val);
+        cur = cur->next;
+    }
+
+    cur = head;
+
+    while (cur) {
+        m[cur]->next = m[cur->next];
+        m[cur]->random = m[cur->random];
+        cur = cur->next;
+    }
+
+    return m[head];
+}
+
+Node *copyRandomList(Node *head) {
+    map<Node *, Node *> m;
+    Node *cur = head;
+    while (cur) {
+        m[cur] = new Node(cur->val);
+        cur = cur->next;
+    }
+
+    cur = head;
+
+    while (cur) {
+        m[cur]->next = m[cur->next];
+        m[cur]->random = m[cur->random];
+        cur = cur->next;
+    }
+
+    return m[head];
+}
+
 // linked list and array
 
 vector<vector<int>> threeSum(vector<int> &nums) {

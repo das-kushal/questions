@@ -1,10 +1,8 @@
 #include "header_gfg.h"
 
-Node *flatten(Node *root)
-{
+Node *flatten(Node *root) {
 }
 
-int main()
-{
+int main() {
     return 0;
 }
