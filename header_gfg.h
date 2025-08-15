@@ -116,16 +116,29 @@
 #include <unordered_set>
 #endif
 
-struct Node {
+class Node {
+   public:
     int data;
-    struct Node *next;
-    struct Node *bottom;
+    Node* left;
+    Node* right;
 
-    Node(int x) {
-        data = x;
-        next = NULL;
-        bottom = NULL;
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
     }
 };
+
+// struct Node {
+//     int data;
+//     struct Node* next;
+//     struct Node* bottom;
+
+//     Node(int x) {
+//         data = x;
+//         next = NULL;
+//         bottom = NULL;
+//     }
+// };
 
 using namespace std;

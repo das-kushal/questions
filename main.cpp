@@ -430,6 +430,34 @@ int trap(vector<int> &height) {
     return ans;
 }
 
+// skipping day 8 9 10 do later
+
+ListNode *rotateRight(ListNode *head, int k) {
+    int len = 0;
+    if (!head or !head->next) return head;
+    ListNode *cur = head;
+    ListNode *tail = NULL;
+    ListNode *nextNode = NULL;
+    while (cur->next) {
+        len++;
+        cur = cur->next;
+    }
+    len++;
+
+    if (k % len == 0) return head;
+    tail = cur;
+    cout << tail->val << endl;
+    k %= len;
+    cur = head;
+    for (int i = 0; i < len - k - 1; ++i) {
+        cur = cur->next;
+    }
+    nextNode = cur->next;
+    cur->next = NULL;
+    tail->next = head;
+    return nextNode;
+}
+
 int main() {
     std::cout << "Listed List questions\n";
     return 0;
