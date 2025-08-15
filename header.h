@@ -141,5 +141,10 @@ public:
     Node *next;
     Node *random;
 
-    Node(int _val) {
-    };
+    Node(int _val)
+    {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
