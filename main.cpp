@@ -410,6 +410,61 @@ Node *copyRandomList(Node *head)
     return m[head];
 }
 
+// linked list and array
+
+vector<vector<int>> threeSum(vector<int> &nums)
+{
+    vector<vector<int>> ans;
+    sort(nums.begin(), nums.end());
+    int n = nums.size();
+    for (int i = 0; i < n - 2; ++i)
+    {
+        if (i > 0 and nums[i] == nums[i - 1])
+            continue;
+        int j = i + 1, k = n - 1;
+        while (j < k)
+        {
+            int sum = nums[i] + nums[j] + nums[k];
+            if (sum == 0)
+            {
+                ans.push_back({nums[i], nums[j], nums[k]});
+                while (j < k and nums[j] == nums[j + 1])
+                    j++;
+                while (j < k and nums[k] == nums[k - 1])
+                    k--;
+                k--;
+                j++;
+            }
+            else if (sum > 0)
+                k--;
+            else
+                j++;
+        }
+    }
+
+    return ans;
+}
+
+int trap(vector<int> &height)
+{
+    int n = height.size();
+    vector<int> left(n), right(n);
+    left[0] = height[0];
+    right[n - 1] = height[n - 1];
+
+    for (int i = 1; i < n; ++i)
+        left[i] = max(left[i - 1], height[i]);
+    for (int i = n - 2; i >= 0; i--)
+        right[i] = max(right[i + 1], height[i]);
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        ans += (min(left[i], right[i]) - height[i]);
+    }
+
+    return ans;
+}
+
 int main()
 {
     std::cout << "Listed List questions\n";
