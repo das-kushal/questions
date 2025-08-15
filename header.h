@@ -132,7 +132,7 @@ class Node {
     Node *child;
 };
 
-class Node {
+struct Node {
    public:
     int val;
     Node *next;
