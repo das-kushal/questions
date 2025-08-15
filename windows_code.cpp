@@ -71,7 +71,40 @@ bool isSymmetric(TreeNode *root)
     return check(root->left, root->right);
 }
 
+int maxPath(TreeNode *root, int &sum)
+{
+    if (!root)
+        return 0;
+    int left = maxPath(root->left, sum);
+    int right = maxPath(root->right, sum);
+    if (left < 0)
+        left = 0;
+    if (right < 0)
+        right = 0;
+    sum = max(sum, root->val + left + right);
+    return root->val + max(left, right);
+}
+
 int maxPathSum(TreeNode *root)
+{
+    int sum = -1e8;
+    maxPath(root, sum);
+    return sum;
+}
+
+int findKthLargest(vector<int> &nums, int k)
+{
+    priority_queue<int> pq;
+    for (auto it : nums)
+        pq.push(it);
+    while (k-- > 0)
+    {
+        pq.pop();
+    }
+    return pq.top();
+}
+
+vector<int> inorderTraversal(TreeNode *root)
 {
 }
 
