@@ -133,6 +133,16 @@ bool isAnagram(string s, string t)
     return true;
 }
 
+TreeNode *invertTree(TreeNode *root)
+{
+    if (!root || (!root->right and !root->left))
+        return root;
+    root->left = invertTree(root->left);
+    root->right = invertTree(root->right);
+    swap(root->left, root->right);
+    return root;
+}
+
 int main()
 {
     return 0;
