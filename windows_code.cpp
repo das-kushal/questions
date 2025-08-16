@@ -104,8 +104,33 @@ int findKthLargest(vector<int> &nums, int k)
     return pq.top();
 }
 
+void inorder(TreeNode *root, vector<int> &ins)
+{
+    if (!root)
+        return;
+    inorder(root->left, ins);
+    ins.push_back(root->val);
+    inorder(root->right, ins);
+}
+
 vector<int> inorderTraversal(TreeNode *root)
 {
+    vector<int> ins;
+    inorder(root, ins);
+    return ins;
+}
+
+bool isAnagram(string s, string t)
+{
+    map<char, int> m;
+    for (auto it : s)
+        m[it]++;
+    for (auto it : t)
+        m[it]--;
+    for (auto it : m)
+        if (it.second != 0)
+            return false;
+    return true;
 }
 
 int main()
