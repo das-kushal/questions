@@ -138,6 +138,25 @@ int countNodes(TreeNode* root) {
     return 1 + countNodes(root->left) + countNodes(root->right);
 }
 
+TreeNode* buildTreeHelper(vector<int>& preorder, int preStart, int preEnd, vector<int>& inorder, int inStart, int inEnd, map<int, int>& m) {
+    if (preStart > preEnd or inStart > inEnd) return NULL;
+    TreeNode* root = new TreeNode(preorder[preStart]);
+    int rootPos = m[preorder[preStart]];
+    int numLeft = rootPos - inStart;
+    root->left = buildTreeHelper(preorder, preStart + 1, preStart + numLeft, inorder, inStart, rootPos - 1, m);
+    root->right = buildTreeHelper(preorder, preStart + numLeft + 1, preEnd, inorder, rootPos + 1, inEnd, m);
+
+    return root;
+}
+
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+    map<int, int> m;
+    int n = preorder.size();
+    for (int i = 0; i < n; i++) m[inorder[i]] = i;
+    TreeNode* root = buildTreeHelper(preorder, 0, n - 1, inorder, 0, n - 1, m);
+    return root;
+}
+
 int main() {
     return 0;
 }
