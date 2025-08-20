@@ -116,7 +116,8 @@
 #include <unordered_set>
 #endif
 
-struct ListNode {
+struct ListNode
+{
     int val;
     ListNode *next;
     ListNode() : val(0), next(nullptr) {}
@@ -124,13 +125,15 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Node {
-   public:
+class Node
+{
+public:
     int val;
     Node *prev;
     Node *next;
     Node *child;
 };
+
 
 struct Node {
    public:
@@ -138,7 +141,8 @@ struct Node {
     Node *next;
     Node *random;
 
-    Node(int _val) {
+    Node(int _val)
+    {
         val = _val;
         next = NULL;
         random = NULL;
