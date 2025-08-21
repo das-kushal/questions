@@ -1,17 +1,4 @@
-#include "header.h"
-
-#define endl "\n";
-using namespace std;
-
-/**
- * Definition for a binary tree node.
- */
-struct TreeNode {
-    int val;
-    TreeNode* left;
-    TreeNode* right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
+#include "treeHeader.h"
 
 // these are important and on the tougher side of questions on trees
 // find nodes at distance k from a given node
