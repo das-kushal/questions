@@ -66,6 +66,41 @@ bool isValidBST(TreeNode* root) {
     return checkBST(root, LONG_MIN, LONG_MAX);
 }
 
+class LowestCommonAncestor {
+   private:
+    // for binary tree
+    // O(N) N is the traversal time to traverse through the tree
+    TreeNode* lowestCommonAncestorBT(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root == NULL || root == p || root == q) return root;
+        TreeNode* leftSide = lowestCommonAncestorBT(root->left, p, q);
+        TreeNode* rightSide = lowestCommonAncestorBT(root->right, p, q);
+        if (leftSide && rightSide) return root;
+        return leftSide ? leftSide : rightSide;
+    }
+
+    // for binary search tree
+    /*
+        here we take advantage of the property of BST that anything on left subtree is smaller than root and anything on
+        right subtree is larger than root.
+        so if our both nodes lie to left or right then we go otherwise the moment there is a split like we have to go left and right i.e. one node lies to the left
+        and other lies to the right then that is the LCA O(height)
+    */
+
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (!root) return root;
+
+        if (root->val > p->val and root->val > q->val) {
+            return lowestCommonAncestor(root->left, p, q);
+        }
+
+        if (root->val < p->val and root->val < q->val) {
+            return lowestCommonAncestor(root->right, p, q);
+        }
+
+        return root;
+    }
+};
+
 int main() {
     return 0;
 }
