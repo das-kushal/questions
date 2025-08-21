@@ -32,6 +32,40 @@ TreeNode* insertIntoBST(TreeNode* root, int val) {
     return root;
 }
 
+// delete a node in BST -- this is an important question
+
+TreeNode* deleteNode(TreeNode* root, int key) {
+}
+
+void inorderKthSmallest(TreeNode* root, int& k, int& ans) {
+    if (!root) return;
+    inorderKthSmallest(root->left, k, ans);
+    k--;
+    if (k == 0) {
+        ans = root->val;
+        return;
+    }
+
+    inorderKthSmallest(root->right, k, ans);
+}
+
+int kthSmallest(TreeNode* root, int k) {
+    if (!root) return -1;
+    int ans = -1;
+    inorderKthSmallest(root, k, ans);
+    return ans;
+}
+
+bool checkBST(TreeNode* root, long long low, long long high) {
+    if (!root) return true;
+    return root->val > low && root->val < high && checkBST(root->left, low, root->val) && checkBST(root->right, root->val, high);
+}
+
+bool isValidBST(TreeNode* root) {
+    if (!root) return true;
+    return checkBST(root, LONG_MIN, LONG_MAX);
+}
+
 int main() {
     return 0;
 }
