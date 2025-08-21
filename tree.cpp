@@ -13,6 +13,8 @@ struct TreeNode {
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
+// these are important and on the tougher side of questions on trees
+// find nodes at distance k from a given node
 void mapParent(TreeNode* root, map<TreeNode*, TreeNode*>& parent) {
     if (!root) return;
     queue<TreeNode*> q;
@@ -86,6 +88,7 @@ void findNode(TreeNode* root, int start, TreeNode*& value) {
     findNode(root->right, start, value);
 }
 
+// amount of time to burn a tree
 int amountOfTime(TreeNode* root, int start) {
     map<TreeNode*, TreeNode*> parents;
     mapParent(root, parents);
@@ -133,11 +136,17 @@ int amountOfTime(TreeNode* root, int start) {
     return time;
 }
 
+// count number of nodes in a complete binary tree
 int countNodes(TreeNode* root) {
     if (!root) return 0;
     return 1 + countNodes(root->left) + countNodes(root->right);
 }
 
+// construct binary tree from preorder and inorder traversal
+
+/*
+    if we are given preorder and postorder traversals then we cannot construct unique binary tree
+*/
 TreeNode* buildTreeHelper(vector<int>& preorder, int preStart, int preEnd, vector<int>& inorder, int inStart, int inEnd, map<int, int>& m) {
     if (preStart > preEnd or inStart > inEnd) return NULL;
     TreeNode* root = new TreeNode(preorder[preStart]);
@@ -156,6 +165,8 @@ TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
     TreeNode* root = buildTreeHelper(preorder, 0, n - 1, inorder, 0, n - 1, m);
     return root;
 }
+
+// serialise and deserialise a binary tree
 
 class Codec {
    public:
