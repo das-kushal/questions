@@ -208,6 +208,40 @@ private:
     }
 };
 
+class RecoverBST
+{
+private:
+    void inorder(TreeNode *root, vector<int> &ans)
+    {
+        if (!root)
+            return;
+        inorder(root->left, ans);
+        ans.push_back(root->val);
+        inorder(root->right, ans);
+    }
+    int ind = 0;
+    void check(TreeNode *root, vector<int> nums)
+    {
+        if (!root)
+            return;
+        check(root->left, nums);
+        if (root->val != nums[ind])
+        {
+            root->val = nums[ind];
+        }
+        ind++;
+        check(root->right, nums);
+    }
+
+    void recoverTree(TreeNode *root)
+    {
+        vector<int> ans;
+        inorder(root, ans);
+        sort(ans.begin(), ans.end());
+        check(root, ans);
+    }
+};
+
 int main()
 {
     return 0;
