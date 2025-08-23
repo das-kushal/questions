@@ -151,8 +151,62 @@ TreeNode *searchBST(TreeNode *root, int val)
         return root;
     if (root->val < val)
         return searchBST(root->right, val);
+
     return searchBST(root->left, val);
 }
+
+void kthSmallestHelper(TreeNode *root, int &k, int &ans)
+{
+    if (!root)
+        return;
+    kthSmallestHelper(root->left, k, ans);
+    k--;
+
+    if (k == 0)
+    {
+        ans = root->val;
+    }
+
+    kthSmallestHelper(root->right, k, ans);
+}
+int kthSmallest(TreeNode *root, int k)
+{
+    int ans = -1;
+    kthSmallestHelper(root, k, ans);
+    return ans;
+}
+
+class TwoSum4
+{
+private:
+    void inorder(TreeNode *root, int k, vector<int> &ans)
+    {
+        if (!root)
+            return;
+        inorder(root->left, k, ans);
+        ans.push_back(root->val);
+        inorder(root->right, k, ans);
+    }
+    bool findTarget(TreeNode *root, int k)
+    {
+        vector<int> ans;
+        inorder(root, k, ans);
+
+        int low = 0, high = ans.size() - 1;
+        while (low < high)
+        {
+            int sum = ans[low] + ans[high];
+            if (sum == k)
+                return true;
+            else if (sum > k)
+                high--;
+            else
+                low++;
+        }
+
+        return false;
+    }
+};
 
 int main()
 {
