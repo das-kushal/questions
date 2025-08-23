@@ -101,6 +101,52 @@ class LowestCommonAncestor {
     }
 };
 
+// construct a BST from preorder traversal
+
+class ConstructBSTFromPreorder {
+   protected:
+    // O(NlogN) {for sorting} + O(N)
+    TreeNode* constructBST(int preStart, int preEnd, vector<int>& preorder, int inStart, int inEnd, vector<int>& inorder, map<int, int>& m) {
+        if (preStart > preEnd || inStart > inEnd) return NULL;
+        TreeNode* root = new TreeNode(preorder[preStart]);
+
+        int rootPos = m[root->val];
+        int numLeft = rootPos - inStart;
+        root->left = constructBST(preStart + 1, preStart + numLeft, preorder, inStart, rootPos - 1, inorder, m);
+        root->right = constructBST(preStart + numLeft + 1, preEnd, preorder, rootPos + 1, inEnd, inorder, m);
+        return root;
+    }
+    TreeNode* bstFromPreorderInorderPreorder(vector<int>& preorder) {
+        vector<int> inorder = preorder;
+        sort(inorder.begin(), inorder.end());
+        map<int, int> mp;
+        int n = preorder.size();
+        for (int i = 0; i < n; ++i) {
+            mp[inorder[i]] = i;
+        }
+        return constructBST(0, n - 1, preorder, 0, n - 1, inorder, mp);
+    }
+
+    // optimal approach O(N)
+    /*
+        we will take a upper bound for each index in teh array and then try to build a node to left with the node as upper bound and when we go to right then the upper bound is the parent's upper bound
+    */
+   public:
+    TreeNode* buildBST(vector<int>& preorder, int& ind, int upperBound) {
+        if (ind == preorder.size() || preorder[ind] > upperBound) return NULL;
+        TreeNode* root = new TreeNode(preorder[ind++]);
+
+        root->left = buildBST(preorder, ind, root->val);
+        root->right = buildBST(preorder, ind, upperBound);
+
+        return root;
+    }
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+        int ind = 0;
+        return buildBST(preorder, ind, INT_MAX);
+    }
+};
+
 int main() {
     return 0;
 }
