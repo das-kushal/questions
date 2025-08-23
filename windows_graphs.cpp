@@ -142,6 +142,30 @@ private:
     }
 };
 
+const int num = 10;
+
+class Test
+{
+private:
+    int val = ::num;
+    Test(int val)
+    {
+        this->val = val;
+    }
+
+    ~Test()
+    {
+        cout << "destructor\n";
+        return;
+    }
+
+public:
+    void print()
+    {
+        cout << val << endl;
+    }
+};
+
 int main()
 {
     return 0;
