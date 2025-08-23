@@ -125,14 +125,14 @@ struct ListNode
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Node
-{
-public:
-    int val;
-    Node *prev;
-    Node *next;
-    Node *child;
-};
+// class Node
+// {
+// public:
+//     int val;
+//     Node *prev;
+//     Node *next;
+//     Node *child;
+// };
 
 class Node
 {
@@ -140,6 +140,8 @@ public:
     int val;
     Node *next;
     Node *random;
+    Node *prev;
+    Node *child;
 
     Node(int _val)
     {
