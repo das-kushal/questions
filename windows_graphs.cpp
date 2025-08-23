@@ -142,27 +142,129 @@ private:
     }
 };
 
-const int num = 10;
-
-class Test
+class DetectCycleUndirectedGraph
 {
 private:
-    int val = ::num;
-    Test(int val)
+    bool cycleCheckDFS(int node, vector<vector<int>> &adj, vector<int> &visited, int parent)
     {
-        this->val = val;
+        visited[node] = 1;
+        for (auto it : adj[node])
+        {
+            if (!visited[it])
+            {
+                if (cycleCheckDFS(it, adj, visited, node))
+                    return true;
+            }
+            else if (visited[it] && it != parent)
+                return true;
+        }
+
+        return false;
     }
 
-    ~Test()
+    bool cycleCheckBFS(int node, vector<vector<int>> &adj, vector<int> &visited)
     {
-        cout << "destructor\n";
-        return;
+        visited[node] = 1;
+        queue<pair<int, int>> q; // node parent
+        q.push({node, -1});
+
+        while (!q.empty())
+        {
+            auto it = q.front();
+            q.pop();
+
+            int node = it.first;
+            int parent = it.second;
+
+            for (auto it : adj[node])
+            {
+                if (!visited[it])
+                {
+                    visited[it] = 1;
+                    q.push({it, node});
+                }
+                else if (visited[it] && it != parent)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
-public:
-    void print()
+    bool isCycle(int V, vector<vector<int>> &edges)
     {
-        cout << val << endl;
+        vector<vector<int>> adj(V);
+        for (auto it : edges)
+        {
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+
+        vector<int> visited(V, 0);
+        for (int i = 0; i < V; ++i)
+        {
+            if (!visited[i])
+            {
+                if (cycleCheckBFS(i, adj, visited))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+};
+
+class Graph01Matrix
+{
+private:
+    vector<vector<int>> updateMatrix(vector<vector<int>> &mat)
+    {
+        int n = mat.size();
+        int m = mat[0].size();
+        vector<vector<int>> visited(n, vector<int>(m, 0));
+        vector<vector<int>> dis(n, vector<int>(m, INT_MAX));
+        // queue<vector<int>> q; // row col dist
+        queue<pair<pair<int, int>, int>> q;
+        for (int i = 0; i < n; ++i)
+        {
+            for (int j = 0; j < m; ++j)
+            {
+                if (mat[i][j] == 0)
+                {
+                    visited[i][j] = 1;
+                    dis[i][j] = 0;
+                    q.push({{i, j}, 0});
+                }
+            }
+        }
+        int dr[4] = {1, -1, 0, 0};
+        int dc[4] = {0, 0, 1, -1};
+        while (!q.empty())
+        {
+            int len = q.size();
+            for (int i = 0; i < len; ++i)
+            {
+                auto it = q.front();
+                q.pop();
+                int row = it.first.first;
+                int col = it.first.second;
+                int dist = it.second;
+                dis[row][col] = dist;
+                for (int k = 0; k < 4; ++k)
+                {
+                    int nRow = row + dr[k];
+                    int nCol = col + dc[k];
+
+                    if (nRow >= 0 && nCol >= 0 && nRow < n && nCol < m && !visited[nRow][nCol])
+                    {
+                        visited[nRow][nCol] = 1;
+                        q.push({{nRow, nCol}, dist + 1});
+                    }
+                }
+            }
+        }
+
+        return dis;
     }
 };
 
