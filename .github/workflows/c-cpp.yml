@@ -14,8 +14,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Compile main.cpp
-      run: g++ -std=c++17 -o main main.cpp
+    - name: Compile windows_graphs.cpp
+      run: g++ -std=c++17 -o main windows_graphs.cpp
 
     - name: Run the compiled binary
       run: ./main
