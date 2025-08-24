@@ -146,7 +146,3 @@ class ConstructBSTFromPreorder {
         return buildBST(preorder, ind, INT_MAX);
     }
 };
-
-int main() {
-    return 0;
-}

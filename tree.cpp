@@ -215,7 +215,3 @@ class Codec {
         return root;
     }
 };
-
-int main() {
-    return 0;
-}
