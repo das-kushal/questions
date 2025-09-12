@@ -182,3 +182,80 @@ vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
     return dist;
 }
 */
+
+int maxArea(vector<int>& height) {
+    int n = height.size();
+    int area = 0;
+    int left = 0, right = n - 1;
+
+    while (right > left) {
+        area = max(area, min(height[left], height[right]) * (right - left));
+        if (height[left] > height[right])
+            right--;
+        else
+            left++;
+    }
+
+    return area;
+}
+
+long countWays(int ind, int* denominations, int value, vector<vector<long>>& dp) {
+    if (ind == 0) {
+        if (value % denominations[ind] == 0) return 1;
+        return 0;
+    }
+
+    if (dp[ind][value] != -1) return dp[ind][value];
+    // 2 options
+    long take = 0;
+    if (denominations[ind] <= value) take = countWays(ind, denominations, value - denominations[ind], dp);
+    long notTake = countWays(ind - 1, denominations, value, dp);
+    return dp[ind][value] = take + notTake;
+}
+
+long countWaysToMakeChange(int* denominations, int n, int value) {
+    vector<vector<long>> dp(n, vector<long>(value + 1, -1));
+    return countWays(n - 1, denominations, value, dp);
+}
+
+bool knows(int a, int b) {
+    return true;
+}
+
+int findCelebrity(int n) {
+    // TLE
+    //  vector<int> ind(n, 0);
+    //  vector<int> out(n, 0);
+    //  for (int i = 0; i < n; ++i) {
+    //      for (int j = 0; j < n; ++j) {
+    //          if (i != j and knows(i, j)) {
+    //              ind[j]++;
+    //              out[i]++;
+    //          }
+    //      }
+    //  }
+
+    // for (int i = 0; i < n; ++i) {
+    //     if (ind[i] == n - 1 and out[i] == 0) return i;
+    // }
+    // return -1;
+
+    // using 2 pointer approach
+    int left = 0, right = n - 1;
+
+    while (left < right) {
+        if (knows(left, right))  // if left knows right then left cannot be celeb
+            left++;
+        else
+            right--;
+    }
+
+    for (int i = 0; i < n; ++i) {
+        if (i != left && !knows(i, left)) return -1;
+    }
+
+    for (int i = 0; i < n; ++i) {
+        if (i != left && knows(left, i)) return -1;
+    }
+    return left;
+}
