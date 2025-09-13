@@ -2,6 +2,20 @@
 
 using namespace std;
 
+template <typename T>
+class BinaryTreeNode {
+   public:
+    T data;
+    BinaryTreeNode<T>* left;
+    BinaryTreeNode<T>* right;
+
+    BinaryTreeNode(T data) {
+        this->data = data;
+        left = NULL;
+        right = NULL;
+    }
+};
+
 int trap(vector<int>& height) {
     int n = height.size();
     vector<int> leftMax(n);
@@ -27,13 +41,31 @@ int trap(vector<int>& height) {
     return water;
 }
 
-int firstMissingPositive(vector<int>& nums) {
+int firstMissingPositiveUsingHash(vector<int>& nums) {
     unordered_map<int, int> m;
     for (auto it : nums) m[it]++;
     int n = nums.size();
     int num = 1;
     while (m.find(num) != m.end()) num++;
     return num;
+}
+
+// some error was there
+int firstMissingPositive(vector<int>& nums) {
+    for (auto& it : nums)
+        if (it < 0) it = 0;
+    int n = nums.size();
+    for (int i = 0; i < n; ++i) {
+        int ind = abs(nums[i]) - 1;
+        if (ind < 0 or ind >= n) continue;
+        if (nums[ind] == 0) nums[ind] = -(n + 1);
+        nums[ind] = nums[ind] < 0 ? nums[ind] : -nums[ind];
+    }
+
+    for (int i = 1; i < n; ++i) {
+        if (nums[i] - 1 > 0) return i;
+    }
+    return n + 1;
 }
 
 int longestValidParentheses(string s) {
@@ -258,4 +290,50 @@ int findCelebrity(int n) {
         if (i != left && knows(left, i)) return -1;
     }
     return left;
+}
+
+char firstNonRepeatingCharacter(string str) {
+    unordered_map<char, int> m;
+    for (auto it : str) m[it]++;
+
+    for (int i = 0; i < str.length(); ++i) {
+        if (m[str[i]] == 1) return str[i];
+    }
+    return str[0];
+}
+
+/* this is also TLE O(n2)*/
+// int jumpsUtil(int ind, int jumps, vector<int>& arr, int n, vector<vector<int>>& dp) {
+//     if (ind >= n - 1) return jumps;
+//     if (dp[ind][jumps] != -1) return dp[ind][jumps];
+//     int mini = INT_MAX;
+//     for (int i = 1; i <= arr[ind]; i++) {
+//         mini = min(mini, jumpsUtil(ind + i, jumps + 1, arr, n, dp));
+//     }
+//     return dp[ind][jumps] = mini;
+// }
+// int minJumps(vector<int>& arr, int n) {
+//     vector<vector<int>> dp(n, vector<int>(n, -1));
+//     int jumps = jumpsUtil(0, 0, arr, n, dp);
+//     return jumps == INT_MAX ? -1 : jumps;
+// }
+
+int minJumps(vector<int>& arr, int n) {
+    // we will by range .. left and right pointer , left will point to the starting point and
+    // right will point to farthest point
+
+    int left = 0, right = 0;
+    int jumps = 0;
+    while (right < n - 1) {
+        int farthest = 0;
+        for (int i = left; i <= right; i++) {
+            farthest = max(farthest, arr[i] + i);
+        }
+
+        left = right + 1;
+        right = farthest;
+        jumps++;
+    }
+
+    return jumps;
 }
