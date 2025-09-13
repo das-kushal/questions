@@ -337,3 +337,69 @@ int minJumps(vector<int>& arr, int n) {
 
     return jumps;
 }
+
+int openLock(vector<string>& deadends, string target) {
+    unordered_set<string> dead;
+    for (auto it : deadends) dead.insert(it);
+    string start = "0000";
+    if (dead.find(start) != dead.end()) return -1;
+    queue<string> q;
+    q.push(start);
+    dead.insert(start);
+    int steps = 0;
+    while (!q.empty()) {
+        int n = q.size();
+        for (int i = 0; i < n; ++i) {
+            string cur = q.front();
+            q.pop();
+            if (cur == target) return steps;
+
+            // try out all the states that we can go from the cur
+            for (int j = 0; j < 4; ++j) {
+                char ch = cur[j];
+                // we can either increase the wheel or decrease the wheel
+                char inc = ch == '9' ? '0' : ch + 1;
+                cur[j] = inc;
+                if (dead.find(cur) == dead.end()) {
+                    q.push(cur);
+                    dead.insert(cur);
+                }
+
+                cur[j] = ch;
+
+                char dec = ch == '0' ? '9' : ch - 1;
+                cur[j] = dec;
+                if (dead.find(cur) == dead.end()) {
+                    q.push(cur);
+                    dead.insert(cur);
+                }
+
+                cur[j] = ch;
+            }
+        }
+        steps++;
+    }
+
+    return -1;
+}
+vector<BinaryTreeNode<int>*> printNodesAtDistanceK(BinaryTreeNode<int>* root, BinaryTreeNode<int>* target, int K) {
+    // Write your code here.
+}
+
+string FirstNonRepeating(string& s) {
+    unordered_map<char, int> m;
+    queue<char> q;
+    string ans = "";
+    for (int i = 0; i < s.length(); ++i) {
+        m[s[i]]++;
+        q.push(s[i]);
+        while (!q.empty() && m[q.front()] > 1) q.pop();
+
+        if (!q.empty())
+            ans += q.front();
+        else
+            ans += "#";
+    }
+
+    return ans;
+}
