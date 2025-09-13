@@ -1,6 +1,6 @@
-#include "header.h"
+#include "main.h"
 
-using namespace std;
+#include "helper.h"
 
 // These are the questions in the striver sheet https://takeuforward.org/interviews/strivers-sde-sheet-top-coding-interview-problems/
 
@@ -8,13 +8,11 @@ using namespace std;
  * Array portion
  */
 
-int maxSubArray(vector<int> &nums)
-{
+int maxSubArray(vector<int> &nums) {
     int cur = nums[0];
     int maxx = nums[0];
 
-    for (int i = 1; i < nums.size(); ++i)
-    {
+    for (int i = 1; i < nums.size(); ++i) {
         if (cur < 0)
             cur = 0;
         cur += nums[i];
@@ -24,14 +22,12 @@ int maxSubArray(vector<int> &nums)
     return maxx;
 }
 
-int maxProfit(vector<int> &prices)
-{
+int maxProfit(vector<int> &prices) {
     int cur = INT_MAX;
     int profit = 0;
     int maxi = 0;
     int n = prices.size();
-    for (int i = 0; i < n; ++i)
-    {
+    for (int i = 0; i < n; ++i) {
         cur = min(cur, prices[i]);
         profit = prices[i] - cur;
         maxi = max(maxi, profit);
@@ -39,20 +35,15 @@ int maxProfit(vector<int> &prices)
     return maxi;
 }
 
-void merge(vector<int> &nums1, int n, vector<int> &nums2, int m)
-{
+void merge(vector<int> &nums1, int n, vector<int> &nums2, int m) {
     vector<int> nums;
     int i = 0, j = 0;
 
-    while (i < n and j < m)
-    {
-        if (nums1[i] < nums2[j])
-        {
+    while (i < n and j < m) {
+        if (nums1[i] < nums2[j]) {
             nums.push_back(nums1[i]);
             i++;
-        }
-        else
-        {
+        } else {
             nums.push_back(nums2[j++]);
         }
     }
@@ -66,21 +57,17 @@ void merge(vector<int> &nums1, int n, vector<int> &nums2, int m)
         it = nums[i++];
 }
 
-int longestConsecutive(vector<int> &nums)
-{
+int longestConsecutive(vector<int> &nums) {
     unordered_map<int, int> m;
     for (auto it : nums)
         m[it]++;
     int count = 0;
     int longest = 0;
-    for (auto it : m)
-    {
-        if (m.find(it.first - 1) == m.end())
-        {
+    for (auto it : m) {
+        if (m.find(it.first - 1) == m.end()) {
             int ele = it.first;
             count = 0;
-            while (m.find(ele) != m.end())
-            {
+            while (m.find(ele) != m.end()) {
                 count++;
                 ele++;
             }
@@ -91,29 +78,24 @@ int longestConsecutive(vector<int> &nums)
     return longest;
 }
 
-int lengthOfLongestSubstring(string s)
-{
+int lengthOfLongestSubstring(string s) {
     int n = s.length();
     set<char> st;
     int left = 0, right = 0;
     int len = 0;
-    while (right < n)
-    {
-        if (st.find(s[right]) == st.end())
-        {
+    while (right < n) {
+        if (st.find(s[right]) == st.end()) {
             len = max(len, right - left + 1);
             st.insert(s[right]);
             right++;
-        }
-        else
+        } else
             st.erase(s[left++]);
     }
 
     return len;
 }
 
-int uniqueHelp(int i, int j, vector<vector<int>> &dp, int m, int n)
-{
+int uniqueHelp(int i, int j, vector<vector<int>> &dp, int m, int n) {
     if (i < 0 or i >= m or j < 0 or j >= n)
         return 0;
     if (i == 0 and j == 0)
@@ -124,25 +106,20 @@ int uniqueHelp(int i, int j, vector<vector<int>> &dp, int m, int n)
     int left = uniqueHelp(i, j - 1, dp, m, n);
     return dp[i][j] = left + up;
 }
-int uniquePaths(int m, int n)
-{
+int uniquePaths(int m, int n) {
     vector<vector<int>> dp(m, vector<int>(n, -1));
 
     return uniqueHelp(m - 1, n - 1, dp, m, n);
 }
 
-vector<vector<int>> merge(vector<vector<int>> &intervals)
-{
+vector<vector<int>> merge(vector<vector<int>> &intervals) {
     sort(intervals.begin(), intervals.end());
     vector<vector<int>> ans;
     // ans.push_back(intervals[0]);
-    for (auto it : intervals)
-    {
-        if (!ans.empty() and ans.back()[1] >= it[0])
-        {
+    for (auto it : intervals) {
+        if (!ans.empty() and ans.back()[1] >= it[0]) {
             ans.back()[1] = max(ans.back()[1], it[1]);
-        }
-        else
+        } else
             ans.push_back(it);
     }
     return ans;
@@ -152,12 +129,10 @@ vector<vector<int>> merge(vector<vector<int>> &intervals)
  * Linked list portion
  */
 
-ListNode *reverseList(ListNode *head)
-{
+ListNode *reverseList(ListNode *head) {
     ListNode *prev = NULL, *cur = head, *nextNode = NULL;
 
-    while (cur)
-    {
+    while (cur) {
         nextNode = cur->next;
         cur->next = prev;
         prev = cur;
@@ -167,11 +142,9 @@ ListNode *reverseList(ListNode *head)
     return prev;
 }
 
-ListNode *middleNode(ListNode *head)
-{
+ListNode *middleNode(ListNode *head) {
     ListNode *slow = head, *fast = head;
-    while (fast and fast->next)
-    {
+    while (fast and fast->next) {
         slow = slow->next;
         fast = fast->next->next;
     }
@@ -179,39 +152,31 @@ ListNode *middleNode(ListNode *head)
     return slow;
 }
 
-ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
-{
+ListNode *mergeTwoLists(ListNode *list1, ListNode *list2) {
     ListNode *temp = new ListNode(-1);
     ListNode *dummy = temp;
-    while (list1 and list2)
-    {
-        if (list1->val < list2->val)
-        {
+    while (list1 and list2) {
+        if (list1->val < list2->val) {
             temp->next = list1;
             list1 = list1->next;
-        }
-        else
-        {
+        } else {
             temp->next = list2;
             list2 = list2->next;
         }
         temp = temp->next;
     }
 
-    if (list1)
-    {
+    if (list1) {
         temp->next = list1;
     }
 
-    if (list2)
-    {
+    if (list2) {
         temp->next = list2;
     }
     return dummy->next;
 }
 
-ListNode *removeNthFromEnd(ListNode *head, int n)
-{
+ListNode *removeNthFromEnd(ListNode *head, int n) {
     ListNode *start = new ListNode(0);
     start->next = head;
 
@@ -220,30 +185,25 @@ ListNode *removeNthFromEnd(ListNode *head, int n)
     for (int i = 0; i < n; ++i)
         fast = fast->next;
 
-    while (fast->next)
-    {
+    while (fast->next) {
         slow = slow->next;
         fast = fast->next;
     }
-    slow->next = slow->next->next; // to cut the link
+    slow->next = slow->next->next;  // to cut the link
     return start->next;
 }
 
-ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
-{
+ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
     int sum = 0, carry = 0;
     ListNode *temp = new ListNode(0);
     ListNode *dummy = temp;
-    while (l1 or l2 or carry)
-    {
+    while (l1 or l2 or carry) {
         sum = 0;
-        if (l1)
-        {
+        if (l1) {
             sum += l1->val;
             l1 = l1->next;
         }
-        if (l2)
-        {
+        if (l2) {
             sum += l2->val;
             l2 = l2->next;
         }
@@ -260,12 +220,10 @@ ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
     return dummy->next;
 }
 
-bool hasCycle(ListNode *head)
-{
+bool hasCycle(ListNode *head) {
     ListNode *slow = head, *fast = head;
 
-    while (fast and fast->next)
-    {
+    while (fast and fast->next) {
         slow = slow->next;
         fast = fast->next->next;
 
@@ -276,17 +234,14 @@ bool hasCycle(ListNode *head)
     return false;
 }
 
-ListNode *detectCycle(ListNode *head)
-{
+ListNode *detectCycle(ListNode *head) {
     ListNode *slow = head, *fast = head;
     bool cycle = false;
-    while (fast and fast->next)
-    {
+    while (fast and fast->next) {
         slow = slow->next;
         fast = fast->next->next;
 
-        if (slow == fast)
-        {
+        if (slow == fast) {
             cycle = true;
             break;
         }
@@ -296,33 +251,28 @@ ListNode *detectCycle(ListNode *head)
         return NULL;
 
     slow = head;
-    while (slow != fast)
-    {
+    while (slow != fast) {
         slow = slow->next;
         fast = fast->next;
     }
     return slow;
 }
 
-ListNode *reverseKGroup(ListNode *head, int k)
-{
+ListNode *reverseKGroup(ListNode *head, int k) {
     ListNode *cur = head;
     int count = 0;
-    while (cur)
-    {
+    while (cur) {
         count++;
         cur = cur->next;
     }
 
-    if (count < k)
-    {
+    if (count < k) {
         return head;
     }
     cur = head;
     ListNode *prev = NULL, *nextNode = cur->next;
 
-    for (int i = 0; i < k; ++i)
-    {
+    for (int i = 0; i < k; ++i) {
         nextNode = cur->next;
         cur->next = prev;
         prev = cur;
@@ -335,11 +285,9 @@ ListNode *reverseKGroup(ListNode *head, int k)
 
 // sort the linked list
 
-ListNode *middle(ListNode *head)
-{
+ListNode *middle(ListNode *head) {
     ListNode *slow = head, *fast = head->next;
-    while (fast and fast->next)
-    {
+    while (fast and fast->next) {
         slow = slow->next;
         fast = fast->next->next;
     }
@@ -347,19 +295,14 @@ ListNode *middle(ListNode *head)
     return slow;
 }
 
-ListNode *merge(ListNode *left, ListNode *right)
-{
+ListNode *merge(ListNode *left, ListNode *right) {
     ListNode *dummy = new ListNode(-1);
     ListNode *temp = dummy;
-    while (left and right)
-    {
-        if (left->val < right->val)
-        {
+    while (left and right) {
+        if (left->val < right->val) {
             dummy->next = left;
             left = left->next;
-        }
-        else
-        {
+        } else {
             dummy->next = right;
             right = right->next;
         }
@@ -374,8 +317,7 @@ ListNode *merge(ListNode *left, ListNode *right)
     return temp->next;
 }
 
-ListNode *sortList(ListNode *head)
-{
+ListNode *sortList(ListNode *head) {
     if (!head or !head->next)
         return head;
     ListNode *left = head;
@@ -388,20 +330,55 @@ ListNode *sortList(ListNode *head)
     return merge(left, right);
 }
 
-Node *copyRandomList(Node *head)
-{
+Node *copyRandomList(Node *head) {
     map<Node *, Node *> m;
     Node *cur = head;
-    while (cur)
-    {
+    while (cur) {
         m[cur] = new Node(cur->val);
         cur = cur->next;
     }
 
     cur = head;
 
-    while (cur)
-    {
+    while (cur) {
+        m[cur]->next = m[cur->next];
+        m[cur]->random = m[cur->random];
+        cur = cur->next;
+    }
+
+    return m[head];
+}
+
+Node *copyRandomList(Node *head) {
+    map<Node *, Node *> m;
+    Node *cur = head;
+    while (cur) {
+        m[cur] = new Node(cur->val);
+        cur = cur->next;
+    }
+
+    cur = head;
+
+    while (cur) {
+        m[cur]->next = m[cur->next];
+        m[cur]->random = m[cur->random];
+        cur = cur->next;
+    }
+
+    return m[head];
+}
+
+Node *copyRandomList(Node *head) {
+    map<Node *, Node *> m;
+    Node *cur = head;
+    while (cur) {
+        m[cur] = new Node(cur->val);
+        cur = cur->next;
+    }
+
+    cur = head;
+
+    while (cur) {
         m[cur]->next = m[cur->next];
         m[cur]->random = m[cur->random];
         cur = cur->next;
@@ -412,21 +389,17 @@ Node *copyRandomList(Node *head)
 
 // linked list and array
 
-vector<vector<int>> threeSum(vector<int> &nums)
-{
+vector<vector<int>> threeSum(vector<int> &nums) {
     vector<vector<int>> ans;
     sort(nums.begin(), nums.end());
     int n = nums.size();
-    for (int i = 0; i < n - 2; ++i)
-    {
+    for (int i = 0; i < n - 2; ++i) {
         if (i > 0 and nums[i] == nums[i - 1])
             continue;
         int j = i + 1, k = n - 1;
-        while (j < k)
-        {
+        while (j < k) {
             int sum = nums[i] + nums[j] + nums[k];
-            if (sum == 0)
-            {
+            if (sum == 0) {
                 ans.push_back({nums[i], nums[j], nums[k]});
                 while (j < k and nums[j] == nums[j + 1])
                     j++;
@@ -434,8 +407,7 @@ vector<vector<int>> threeSum(vector<int> &nums)
                     k--;
                 k--;
                 j++;
-            }
-            else if (sum > 0)
+            } else if (sum > 0)
                 k--;
             else
                 j++;
@@ -445,8 +417,7 @@ vector<vector<int>> threeSum(vector<int> &nums)
     return ans;
 }
 
-int trap(vector<int> &height)
-{
+int trap(vector<int> &height) {
     int n = height.size();
     vector<int> left(n), right(n);
     left[0] = height[0];
@@ -457,16 +428,37 @@ int trap(vector<int> &height)
     for (int i = n - 2; i >= 0; i--)
         right[i] = max(right[i + 1], height[i]);
     int ans = 0;
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         ans += (min(left[i], right[i]) - height[i]);
     }
 
     return ans;
 }
 
-int main()
-{
-    std::cout << "Listed List questions\n";
-    return 0;
+// skipping day 8 9 10 do later
+
+ListNode *rotateRight(ListNode *head, int k) {
+    int len = 0;
+    if (!head or !head->next) return head;
+    ListNode *cur = head;
+    ListNode *tail = NULL;
+    ListNode *nextNode = NULL;
+    while (cur->next) {
+        len++;
+        cur = cur->next;
+    }
+    len++;
+
+    if (k % len == 0) return head;
+    tail = cur;
+    cout << tail->val << endl;
+    k %= len;
+    cur = head;
+    for (int i = 0; i < len - k - 1; ++i) {
+        cur = cur->next;
+    }
+    nextNode = cur->next;
+    cur->next = NULL;
+    tail->next = head;
+    return nextNode;
 }
