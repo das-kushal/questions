@@ -382,8 +382,72 @@ int openLock(vector<string>& deadends, string target) {
 
     return -1;
 }
+
+void inoder(BinaryTreeNode<int>* root, unordered_map<BinaryTreeNode<int>*, BinaryTreeNode<int>*>& parents) {
+    if (!root) return;
+    queue<BinaryTreeNode<int>*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        int n = q.size();
+        for (int i = 0; i < n; ++i) {
+            auto node = q.front();
+            q.pop();
+
+            if (node->left) {
+                parents[node->left] = node;
+                q.push(node->left);
+            }
+
+            if (node->right) {
+                parents[node->right] = node;
+                q.push(node->right);
+            }
+        }
+    }
+}
+
 vector<BinaryTreeNode<int>*> printNodesAtDistanceK(BinaryTreeNode<int>* root, BinaryTreeNode<int>* target, int K) {
-    // Write your code here.
+    unordered_map<BinaryTreeNode<int>*, BinaryTreeNode<int>*> parents;
+    inoder(root, parents);
+    vector<BinaryTreeNode<int>*> ans;
+    if (!root) return ans;
+    queue<BinaryTreeNode<int>*> q;
+    q.push(target);
+
+    int levels = 0;
+    unordered_map<BinaryTreeNode<int>*, bool> visited;
+    visited[target] = true;
+    while (!q.empty()) {
+        int n = q.size();
+        if (levels == K) break;
+        for (int i = 0; i < n; ++i) {
+            auto node = q.front();
+            q.pop();
+
+            if (node->left && !visited[node->left]) {
+                visited[node->left] = 1;
+                q.push(node->left);
+            }
+
+            if (node->right && !visited[node->right]) {
+                visited[node->right] = 1;
+                q.push(node->right);
+            }
+
+            if (parents[node] && !visited[parents[node]]) {
+                visited[parents[node]] = 1;
+                q.push(parents[node]);
+            }
+        }
+        levels++;
+    }
+
+    while (!q.empty()) {
+        ans.push_back(q.front());
+        q.pop();
+    }
+    return ans;
 }
 
 string FirstNonRepeating(string& s) {
@@ -434,4 +498,68 @@ vector<int> minSubarray(vector<int> arr, int n, int x) {
     }
 
     return ans;
+}
+
+vector<int> slidingWindowMaximum(vector<int>& nums, int& k) {
+}
+
+bool canPlaceCows(int sep, vector<int> stalls, int k) {
+    int cows = 1;
+    int lastCowPos = stalls[0];
+
+    int n = stalls.size();
+    for (int i = 1; i < n; ++i) {
+        if (stalls[i] - lastCowPos >= sep) {
+            lastCowPos = stalls[i];
+            cows++;
+        }
+    }
+
+    return cows >= k;
+}
+
+int aggressiveCows(vector<int>& stalls, int k) {
+    sort(stalls.begin(), stalls.end());
+    int n = stalls.size();
+    int low = 1, high = stalls[n - 1] - stalls[0];  // high is the max separation that can be achieved
+    int ans = 0;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (canPlaceCows(mid, stalls, k)) {
+            ans = mid;
+            low = mid + 1;
+        } else
+            high = mid - 1;
+    }
+    return ans;
+}
+
+// josephus problem
+
+int findWinner(int n, int k) {
+    if (n == 1) return 0;
+
+    int ind = findWinner(n - 1, k);
+    ind = (ind + k) % n;  // to find original index in original array
+    return ind;
+}
+
+int findTheWinner(int n, int k) {
+    // queue<int> q;
+    // for (int i = 1; i <= n; ++i) q.push(i);
+
+    // while (!q.size() > 1) {
+    //     int temp = k;
+    //     while (temp-- > 1) {
+    //         int ele = q.front();
+    //         q.pop();
+    //         q.push(ele);
+    //     }
+    //     q.pop();
+    // }
+
+    // return q.front();
+
+    int ind = findWinner(n, k);
+    return ind + 1;
 }
