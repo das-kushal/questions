@@ -403,3 +403,35 @@ string FirstNonRepeating(string& s) {
 
     return ans;
 }
+
+vector<int> minSubarray(vector<int> arr, int n, int x) {
+    int sum = 0;
+    int minLength = INT_MAX;
+
+    int start = 0, end = 0;
+    int vecStart = -1, vecEnd = -1;
+    while (end < n) {
+        sum += arr[end];
+        while (sum > x) {
+            if ((end - start + 1) < minLength) {
+                minLength = end - start + 1;
+                vecStart = start;
+                vecEnd = end;
+            }
+            // minLength = min(minLength, end - start + 1);
+            sum -= arr[start];
+            start++;
+        }
+        end++;
+    }
+    // cout<<sum<<" ";cout<<endl;
+    // cout<<start<<" "<<end<<"\n";
+    vector<int> ans;
+    if (vecStart != -1 and vecEnd != -1) {
+        for (int i = vecStart; i <= vecEnd; i++) {
+            ans.push_back(arr[i]);
+        }
+    }
+
+    return ans;
+}
